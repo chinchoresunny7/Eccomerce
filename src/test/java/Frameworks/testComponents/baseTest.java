@@ -7,6 +7,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -26,14 +27,16 @@ public class baseTest {
         Properties prop = new Properties();
         FileInputStream readFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//java//Frameworks//Resources//globalData.properties");
         prop.load(readFile);
-        String browser= prop.getProperty("browser");
+        String browser = System.getProperty("browser")!=null ? System.getProperty("browser") : prop.getProperty("browser");
 
         if(browser.equalsIgnoreCase("chrome")){
 //            WebDriverManager.chromedriver().setup();
             driver = new ChromeDriver();
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        } else if (browser.equalsIgnoreCase("fireFox")) {
+            driver = new FirefoxDriver();
         }
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
     }
 

@@ -8,29 +8,31 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.testng.internal.annotations.IListeners;
 
 import java.io.IOException;
 
 public class Listeners extends baseTest implements ITestListener {
     ExtentReports extent = ExtentReportNG.getReportObject();
     ExtentTest test ;
+    ThreadLocal<ExtentTest> ts = new ThreadLocal<>();
+
     @Override
     public void onTestStart(ITestResult result) {
         ITestListener.super.onTestStart(result);
         test = extent.createTest(String.valueOf(result.getMethod().getMethodName()));
+        ts.set(test);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         ITestListener.super.onTestSuccess(result);
-        test.log(Status.PASS, "Test Passed");
+        ts.get().log(Status.PASS, "Test Passed");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         ITestListener.super.onTestFailure(result);
-        test.log(Status.FAIL,result.getThrowable());
+        ts.get().log(Status.FAIL,result.getThrowable());
 
         String screenshotPath = null;
         try {
@@ -38,13 +40,12 @@ public class Listeners extends baseTest implements ITestListener {
                 driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
             screenshotPath = getScreenshot(result.getMethod().getMethodName(),driver);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        test.addScreenCaptureFromPath(screenshotPath,result.getMethod().getMethodName());
+        ts.get().addScreenCaptureFromPath(screenshotPath,result.getMethod().getMethodName());
     }
 
     @Override

@@ -1,9 +1,11 @@
 package Frameworks.Tests;
 
 import Frameworks.pageObjects.landingPage;
-import Frameworks.pageObjects.productCatologue;
+//import Frameworks.pageObjects.productCatologue;
+import Frameworks.testComponents.Retry;
 import Frameworks.testComponents.baseTest;
 import org.testng.Assert;
+import org.testng.IRetryAnalyzer;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -11,7 +13,7 @@ import java.io.IOException;
 
 public class ErrorValidation extends baseTest {
 
-    @Test(dataProvider = "loginDetails1")
+    @Test(dataProvider = "loginDetails1", retryAnalyzer = Retry.class)
     public void loginErrorValidation(String username, String password) throws IOException {
         landingPage l = new landingPage(driver);
         l.goTo();
