@@ -25,8 +25,7 @@ public class landingPage extends abstractComponent {
     WebElement loginButton;
 
 public productCatologue login(String mail, String Pass){
-
-    email.sendKeys("Punu@xyz.com");
+    email.sendKeys(mail);
     Password.sendKeys(Pass);
     loginButton.click();
     productCatologue productcatologue = new productCatologue(driver);

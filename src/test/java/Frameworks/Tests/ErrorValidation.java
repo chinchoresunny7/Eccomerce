@@ -27,8 +27,8 @@ public class ErrorValidation extends baseTest {
     public Object[][] loginDataProvider() {
         return new Object[][]{
                 {"Punu@xyz.com", "Abc@123"},
-                {"Punu@xyz.co", "Abc@1234"},
-                {"Pnu@xyz.com", "bc@1234"}
+                {"Punu@xyz.co", "Abc@134"},
+                {"Pnu@xyz.com", "bc@234"}
         };
     }
 }

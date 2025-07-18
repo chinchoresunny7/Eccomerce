@@ -20,7 +20,6 @@ public class confirmationPage extends abstractComponent {
 
     public String getConfirmationMessage() {
         waitForElementToAppear(By.cssSelector(".hero-primary"));
-        System.out.println(message.getText());
         return message.getText();
     }
 }
