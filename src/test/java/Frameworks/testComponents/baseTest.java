@@ -2,11 +2,11 @@ package Frameworks.testComponents;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -29,9 +29,17 @@ public class baseTest {
         prop.load(readFile);
         String browser = System.getProperty("browser")!=null ? System.getProperty("browser") : prop.getProperty("browser");
 
-        if(browser.equalsIgnoreCase("chrome")){
-//            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
+        if(browser.contains("Chrome")){
+            ChromeOptions o= new ChromeOptions();
+            if(browser.contains("headless")){
+                o.addArguments("--headless");
+                o.addArguments("--window-size=1920,1080");
+            }
+            driver = new ChromeDriver(o);
+            WebDriverManager.chromedriver().setup();
+
+//            driver.manage().window().setSize(new Dimension(1440,900));
+//            driver.manage().window().setPosition(new Point(0,0));
         } else if (browser.equalsIgnoreCase("fireFox")) {
             driver = new FirefoxDriver();
         }
@@ -65,6 +73,8 @@ public class baseTest {
         FileUtils.copyFile(src,file);
         return System.getProperty("user.dir") + "//Reports//" + testCaseName +".png";
     }
+
+
 }
 
 
